@@ -6,6 +6,18 @@ import Layout from "@/components/layout";
 
 function App() {
   const [count, setCount] = useState(0);
+  const [data, setData] = useState<string[]>([]);
+  // const [state, updater] = useState(defaultValue)
+
+  const handleClick = () => {
+    setCount(count + 1);
+    // setCount((prevState) => prevState + 1);
+  };
+
+  function handleClick2() {
+    setCount(count + 1);
+    // setCount((prevState) => prevState + 1);
+  }
 
   return (
     <Layout>
@@ -23,9 +35,8 @@ function App() {
       </div>
       <h1 className="text-red-500">Vite + React</h1>
       <div className="card">
-        <Button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </Button>
+        {/* <Button onClick={() => handleClick()}>count is {count}</Button> */}
+        <Button onClick={handleClick2}>count is {count}</Button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
