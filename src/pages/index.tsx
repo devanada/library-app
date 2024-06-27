@@ -35,13 +35,13 @@ export default function Index() {
 
       setData(response.payload.datas);
     } catch (error) {
-      alert((error as Error).message);
+      alert(error);
     }
   }
 
   return (
     <Layout>
-      <div className="grid grid-cols-2 md:grid-cols-5">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {data.map((book) => (
           <BookCard
             key={book.id}

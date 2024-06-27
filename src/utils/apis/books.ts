@@ -1,24 +1,30 @@
 import { IPagination, IResponse } from "@/utils/types/api";
 import { IBook } from "@/utils/types/books";
-import { booksSampleData } from "../datas/books";
+import axiosWithConfig from "./axios-with-config";
 
-export const getBooks = () => {
-  return new Promise<IResponse<IPagination<IBook[]>>>((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        message: "Books found",
-        payload: {
-          currentPage: 1,
-          datas: booksSampleData,
-          totalItems: 10,
-          totalPages: 1,
-        },
-      });
-    }, 1000);
-  });
+export const getBooks = async () => {
+  try {
+    const response = await axiosWithConfig.get("/books");
+
+    return response.data as IResponse<IPagination<IBook[]>>;
+  } catch (error: any) {
+    const { message } = error.response.data;
+
+    throw Error(message);
+  }
 };
 
-export const getDetailBook = () => {};
+export const getDetailBook = async (id_book: number) => {
+  try {
+    const response = await axiosWithConfig.get(`/books/${id_book}`);
+
+    return response.data as IResponse<IBook>;
+  } catch (error: any) {
+    const { message } = error.response.data;
+
+    throw Error(message);
+  }
+};
 
 export const postBook = () => {};
 
