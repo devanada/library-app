@@ -1,9 +1,9 @@
-import { Pagination, Response } from "@/utils/types/api";
-import { Books } from "@/utils/types/books";
+import { IPagination, IResponse } from "@/utils/types/api";
+import { IBook } from "@/utils/types/books";
 import { booksSampleData } from "../datas/books";
 
 export const getBooks = () => {
-  return new Promise<Response<Pagination<Books[]>>>((resolve, reject) => {
+  return new Promise<IResponse<IPagination<IBook[]>>>((resolve, reject) => {
     setTimeout(() => {
       resolve({
         message: "Books found",

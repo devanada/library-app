@@ -19,11 +19,11 @@ import { useEffect, useState } from "react";
 import BookCard from "@/components/book-card";
 import Layout from "@/components/layout";
 
-import { Books } from "@/utils/types/books";
+import { IBook } from "@/utils/types/books";
 import { getBooks } from "@/utils/apis/books";
 
 export default function Index() {
-  const [data, setData] = useState<Books[]>([]);
+  const [data, setData] = useState<IBook[]>([]);
 
   useEffect(() => {
     fetchData();
@@ -41,14 +41,16 @@ export default function Index() {
 
   return (
     <Layout>
-      {data.map((book) => (
-        <BookCard
-          key={book.id}
-          title={book.title}
-          author={book.author}
-          cover_image={book.cover_image}
-        />
-      ))}
+      <div className="grid grid-cols-2 md:grid-cols-5">
+        {data.map((book) => (
+          <BookCard
+            key={book.id}
+            data={book}
+            navigate="#"
+            data-testid={`book-${book.id}`}
+          />
+        ))}
+      </div>
     </Layout>
   );
 }
