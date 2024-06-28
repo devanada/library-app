@@ -1,9 +1,37 @@
+import { useState } from "react";
+import Cookies from "js-cookie";
+
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Layout from "@/components/layout";
 
+import { userLogin } from "@/utils/apis/auth";
+import { LoginSchema } from "@/utils/types/auth";
+
 function Login() {
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  const [body, setBody] = useState<LoginSchema>({
+    email: "",
+    password: "",
+  });
+
+  async function handleSubmit() {
+    try {
+      // const body = {
+      //   email,
+      //   password,
+      // };
+      const response = await userLogin(body);
+
+      Cookies.set("token", response.payload.token);
+      // TODO: add navigation after login
+    } catch (error) {
+      alert(error);
+    }
+  }
+
   return (
     <Layout>
       <div className="m-auto w-full max-w-md space-y-6">
@@ -29,6 +57,13 @@ function Login() {
               placeholder="Email"
               className="w-full"
               required
+              value={body.email}
+              onChange={(e) =>
+                setBody({
+                  ...body,
+                  email: e.target.value,
+                })
+              }
             />
           </div>
           <div>
@@ -41,9 +76,20 @@ function Login() {
               placeholder="Password"
               className="w-full"
               required
+              value={body.password}
+              onChange={(e) =>
+                setBody({
+                  ...body,
+                  password: e.target.value,
+                })
+              }
             />
           </div>
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            className="w-full"
+            onClick={() => handleSubmit()}
+          >
             Sign in
           </Button>
         </div>
