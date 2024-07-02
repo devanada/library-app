@@ -46,7 +46,7 @@ export default function Index() {
           <BookCard
             key={book.id}
             data={book}
-            navigate="#"
+            navigate={`/books/${book.id}`}
             data-testid={`book-${book.id}`}
           />
         ))}

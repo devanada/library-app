@@ -1,4 +1,5 @@
 import { IBook } from "@/utils/types/books";
+import { Link } from "react-router-dom";
 
 interface Props {
   data: IBook;
@@ -10,9 +11,9 @@ const BookCard = (props: Props) => {
   const { data, navigate } = props;
 
   return (
-    <a
+    <Link
       className="flex flex-col p-4 w-48 md:w-56 lg:w-64 h-fit items-center gap-3"
-      href={navigate}
+      to={navigate}
       data-testid={props["data-testid"]}
     >
       <figure className="overflow-hidden shadow-md shadow-neutral-300">
@@ -28,7 +29,7 @@ const BookCard = (props: Props) => {
         {data.title}
       </p>
       <p className="text-muted-foreground text-sm text-center">{data.author}</p>
-    </a>
+    </Link>
   );
 };
 

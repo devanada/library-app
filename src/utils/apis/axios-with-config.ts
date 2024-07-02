@@ -14,4 +14,16 @@ axiosWithConfig.interceptors.request.use((axiosConfig) => {
   return axiosConfig;
 });
 
+axiosWithConfig.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
+      Cookies.remove("token"); // TODO: Implemenet global state
+      return;
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export default axiosWithConfig;

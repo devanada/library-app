@@ -1,4 +1,5 @@
 import { CircleUser, Menu, Package2, Search } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -16,43 +17,19 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-        <a
-          href="#"
+        <Link
+          to="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <Package2 className="h-6 w-6" />
           <span className="sr-only">Library App</span>
-        </a>
-        <a
-          href="#"
+        </Link>
+        <Link
+          to="/books"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
-          Dashboard
-        </a>
-        <a
-          href="#"
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Orders
-        </a>
-        <a
-          href="#"
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Products
-        </a>
-        <a
-          href="#"
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Customers
-        </a>
-        <a
-          href="#"
-          className="text-foreground transition-colors hover:text-foreground"
-        >
-          Settings
-        </a>
+          Books
+        </Link>
       </nav>
       <Sheet>
         <SheetTrigger asChild>
@@ -63,28 +40,19 @@ const Navbar = () => {
         </SheetTrigger>
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="flex items-center gap-2 text-lg font-semibold"
             >
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Library App</span>
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground">
-              Dashboard
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground">
-              Orders
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground">
-              Products
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground">
-              Customers
-            </a>
-            <a href="#" className="hover:text-foreground">
-              Settings
-            </a>
+            </Link>
+            <Link
+              to="/"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Books
+            </Link>
           </nav>
         </SheetContent>
       </Sheet>
@@ -112,6 +80,9 @@ const Navbar = () => {
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/login">Login</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

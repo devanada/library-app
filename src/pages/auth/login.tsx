@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Cookies from "js-cookie";
 
@@ -16,6 +17,7 @@ function Login() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   async function handleSubmit() {
     try {
@@ -26,7 +28,7 @@ function Login() {
       const response = await userLogin(body);
 
       Cookies.set("token", response.payload.token);
-      // TODO: add navigation after login
+      navigate("/");
     } catch (error) {
       alert(error);
     }
