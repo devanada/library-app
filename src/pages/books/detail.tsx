@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Layout from "@/components/layout";
@@ -7,6 +8,7 @@ import { getDetailBook } from "@/utils/apis/books";
 
 const DetailBook = () => {
   const [data, setData] = useState<IBook>();
+  const params = useParams();
 
   useEffect(() => {
     fetchData();
@@ -14,7 +16,7 @@ const DetailBook = () => {
 
   async function fetchData() {
     try {
-      const response = await getDetailBook(1); // TODO: Get ID book from path param using react router dom
+      const response = await getDetailBook(+params.id_book!);
 
       setData(response.payload);
     } catch (error) {

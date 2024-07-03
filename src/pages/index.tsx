@@ -21,13 +21,15 @@ import Layout from "@/components/layout";
 
 import { IBook } from "@/utils/types/books";
 import { getBooks } from "@/utils/apis/books";
+import { Button } from "@/components/ui/button";
 
 export default function Index() {
   const [data, setData] = useState<IBook[]>([]);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [reload]);
 
   async function fetchData() {
     try {
@@ -41,6 +43,7 @@ export default function Index() {
 
   return (
     <Layout>
+      <Button onClick={() => setReload(!reload)}>Reload Data</Button>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {data.map((book) => (
           <BookCard

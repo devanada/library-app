@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Cookies from "js-cookie";
 
@@ -43,9 +43,12 @@ function Login() {
           </h1>
           <p className="mt-2 text-muted-foreground">
             Don't have an account?{" "}
-            <a href="#" className="font-medium text-primary hover:underline">
+            <Link
+              to="/register"
+              className="font-medium text-primary hover:underline"
+            >
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
         <div className="space-y-4">
