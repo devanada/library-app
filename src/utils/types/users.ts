@@ -13,16 +13,16 @@ export const profileSchema = z.object({
   address: z.string().min(1, { message: "Address is required" }),
   profile_picture: z
     .instanceof(File)
+    .optional()
     .refine(
-      (file) => file.size <= MAX_UPLOAD_SIZE,
+      (file) => !file || file.size <= MAX_UPLOAD_SIZE,
       `Max image size is ${MAX_MB}MB`
     )
     .refine(
       (file) =>
         !file || file.type === "" || ACCEPTED_IMAGE_TYPES.includes(file.type),
       "Only .jpg, .jpeg, and .png formats are supported"
-    )
-    .optional(),
+    ),
 });
 
 export type RoleType = "user" | "admin";

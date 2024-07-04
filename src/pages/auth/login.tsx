@@ -1,36 +1,37 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
 
+import { CustomFormField } from "@/components/custom-formfield";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import Layout from "@/components/layout";
 
+import { LoginSchema, loginSchema } from "@/utils/types/auth";
 import { userLogin } from "@/utils/apis/auth";
-import { LoginSchema } from "@/utils/types/auth";
 
 function Login() {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  const [body, setBody] = useState<LoginSchema>({
-    email: "",
-    password: "",
-  });
   const navigate = useNavigate();
+  const form = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  async function handleSubmit() {
+  async function onSubmit(data: LoginSchema) {
     try {
-      // const body = {
-      //   email,
-      //   password,
-      // };
-      const response = await userLogin(body);
+      const response = await userLogin(data);
 
       Cookies.set("token", response.payload.token);
+      toast.success(response.message);
       navigate("/");
     } catch (error) {
-      alert(error);
+      toast.error((error as Error).message);
     }
   }
 
@@ -51,53 +52,51 @@ function Login() {
             </Link>
           </p>
         </div>
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="email" className="sr-only">
-              Email
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="Email"
-              className="w-full"
-              required
-              value={body.email}
-              onChange={(e) =>
-                setBody({
-                  ...body,
-                  email: e.target.value,
-                })
-              }
-            />
-          </div>
-          <div>
-            <Label htmlFor="password" className="sr-only">
-              Password
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Password"
-              className="w-full"
-              required
-              value={body.password}
-              onChange={(e) =>
-                setBody({
-                  ...body,
-                  password: e.target.value,
-                })
-              }
-            />
-          </div>
-          <Button
-            type="submit"
-            className="w-full"
-            onClick={() => handleSubmit()}
+        <Form {...form}>
+          <form
+            data-testid="form-login"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4"
           >
-            Sign in
-          </Button>
-        </div>
+            <CustomFormField control={form.control} name="email" label="Email">
+              {(field) => (
+                <Input
+                  data-testid="input-email"
+                  placeholder="johndoe@mail.com"
+                  type="email"
+                  disabled={form.formState.isSubmitting}
+                  aria-disabled={form.formState.isSubmitting}
+                  {...field}
+                />
+              )}
+            </CustomFormField>
+            <CustomFormField
+              control={form.control}
+              name="password"
+              label="Password"
+            >
+              {(field) => (
+                <Input
+                  data-testid="input-password"
+                  placeholder="Password"
+                  type="password"
+                  disabled={form.formState.isSubmitting}
+                  aria-disabled={form.formState.isSubmitting}
+                  {...field}
+                />
+              )}
+            </CustomFormField>
+            <Button
+              data-testid="btn-submit"
+              type="submit"
+              className="w-full"
+              disabled={form.formState.isSubmitting}
+              aria-disabled={form.formState.isSubmitting}
+            >
+              Sign in
+            </Button>
+          </form>
+        </Form>
       </div>
     </Layout>
   );

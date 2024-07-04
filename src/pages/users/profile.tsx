@@ -8,10 +8,10 @@ import Layout from "@/components/layout";
 import { getBorrows } from "@/utils/apis/borrows";
 import { getProfile } from "@/utils/apis/users";
 import { IBorrow } from "@/utils/types/borrows";
-import { IUser } from "@/utils/types/users";
+import { ProfileType } from "@/utils/types/users";
 
 function Profile() {
-  const [data, setData] = useState<IUser>();
+  const [data, setData] = useState<ProfileType>();
   const [borrows, setBorrows] = useState<IBorrow[]>([]);
 
   useEffect(() => {

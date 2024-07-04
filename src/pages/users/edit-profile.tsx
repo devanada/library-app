@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
+import Layout from "@/components/layout";
 import {
   Card,
   CardHeader,
@@ -8,18 +14,23 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import Layout from "@/components/layout";
 
 import { deleteProfile, getProfile, updateProfile } from "@/utils/apis/users";
-import { IUser, ProfileSchema } from "@/utils/types/users";
+import { ProfileSchema, profileSchema } from "@/utils/types/users";
+import { CustomFormField } from "@/components/custom-formfield";
 
 function EditProfile() {
-  const [data, setData] = useState<ProfileSchema>();
+  const form = useForm<ProfileSchema>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      full_name: "",
+      email: "",
+      password: "",
+      address: "",
+      phone_number: "",
+      profile_picture: new File([], ""),
+    },
+  });
 
   useEffect(() => {
     fetchData();
@@ -30,20 +41,18 @@ function EditProfile() {
       const response = await getProfile();
       const profile = response.payload;
 
-      setData({
-        address: profile.address,
-        email: profile.email,
-        full_name: profile.full_name,
-        phone_number: profile.phone_number,
-      });
+      form.setValue("address", profile.address);
+      form.setValue("email", profile.email);
+      form.setValue("full_name", profile.full_name);
+      form.setValue("phone_number", profile.phone_number);
     } catch (error) {
       alert(error);
     }
   }
 
-  async function handleUpdate() {
+  async function handleUpdate(data: ProfileSchema) {
     try {
-      const response = await updateProfile(data!);
+      const response = await updateProfile(data);
 
       alert(response.message);
     } catch (error) {
@@ -70,52 +79,122 @@ function EditProfile() {
           <CardDescription>Update your personal information.</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-6">
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={data?.email} />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="name">Full Name</Label>
-            <Input id="name" value={data?.full_name} />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={data?.password}
-              onChange={(e) =>
-                setData({
-                  ...data,
-                  password: e.target.value,
-                })
-              }
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input id="phone" type="tel" value={data?.phone_number} />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="address">Address</Label>
-            <Textarea id="address" rows={3} value={data?.address} />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="profile-picture">Profile Picture</Label>
-            <div className="flex items-center gap-4">
-              <Avatar className="h-16 w-16">
-                <AvatarImage src={"/placeholder-user.jpg"} />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-              <Input id="profile-picture" type="file" />
-            </div>
-          </div>
+          <Form {...form}>
+            <form
+              id="form-update"
+              data-testid="form-update"
+              onSubmit={form.handleSubmit(handleUpdate)}
+              className="space-y-4"
+            >
+              <CustomFormField
+                control={form.control}
+                name="email"
+                label="Email"
+              >
+                {(field) => (
+                  <Input
+                    {...field}
+                    data-testid="input-email"
+                    placeholder="johndoe@mail.com"
+                    type="email"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                    value={field.value as string}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="full_name"
+                label="Full Name"
+              >
+                {(field) => (
+                  <Input
+                    {...field}
+                    data-testid="input-full-name"
+                    placeholder="John Doe"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                    value={field.value as string}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="password"
+                label="Password"
+              >
+                {(field) => (
+                  <Input
+                    {...field}
+                    data-testid="input-password"
+                    placeholder="Password"
+                    type="password"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                    value={field.value as string}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="address"
+                label="Address"
+              >
+                {(field) => (
+                  <Input
+                    {...field}
+                    data-testid="input-address"
+                    placeholder="Lorem Ipsum Street"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                    value={field.value as string}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="phone_number"
+                label="Phone Number"
+              >
+                {(field) => (
+                  <Input
+                    {...field}
+                    data-testid="input-phone-number"
+                    placeholder="+628xxxxxxxx"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                    value={field.value as string}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="profile_picture"
+                label="Profile Picture"
+              >
+                {(field) => (
+                  <Input
+                    data-testid="input-profile-picture"
+                    type="file"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                    onChange={(e) =>
+                      field.onChange(e.target.files ? e.target.files[0] : null)
+                    }
+                  />
+                )}
+              </CustomFormField>
+            </form>
+          </Form>
         </CardContent>
         <CardFooter className="flex justify-end gap-3">
           <Button variant="destructive" onClick={() => handleDelete()}>
             Delete Account
           </Button>
-          <Button onClick={() => handleUpdate()}>Save Changes</Button>
+          <Button type="submit" form="form-update">
+            Save Changes
+          </Button>
         </CardFooter>
       </Card>
     </Layout>
