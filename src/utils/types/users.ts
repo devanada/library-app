@@ -1,18 +1,6 @@
 import * as z from "zod";
 
-const MAX_MB = 2;
-const MAX_UPLOAD_SIZE = 1024 * 1024 * MAX_MB;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
-
-export interface IUser {
-  id: number;
-  full_name: string;
-  email: string;
-  role: string;
-  profile_picture: string;
-  address: string;
-  phone_number: string;
-}
+import { ACCEPTED_IMAGE_TYPES, MAX_MB, MAX_UPLOAD_SIZE } from "../const";
 
 export const profileSchema = z.object({
   email: z
@@ -32,9 +20,20 @@ export const profileSchema = z.object({
     .refine(
       (file) =>
         !file || file.type === "" || ACCEPTED_IMAGE_TYPES.includes(file.type),
-      `Only .jpg, .jpeg, and .png formats are supported`
+      "Only .jpg, .jpeg, and .png formats are supported"
     )
     .optional(),
 });
 
+export type RoleType = "user" | "admin";
+
+export interface ProfileType {
+  id: number;
+  full_name: string;
+  email: string;
+  role: RoleType;
+  profile_picture: string;
+  address: string;
+  phone_number: string;
+}
 export type ProfileSchema = z.infer<typeof profileSchema>;
