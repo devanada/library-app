@@ -45,12 +45,12 @@ function Register() {
             Sign in to your account
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Don't have an account?{" "}
+            Already have an account?{" "}
             <Link
-              to="/register"
+              to="/login"
               className="font-medium text-primary hover:underline"
             >
-              Sign up
+              Sign in
             </Link>
           </p>
         </div>

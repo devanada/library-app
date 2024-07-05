@@ -1,33 +1,24 @@
 import { useEffect, useState } from "react";
 import { LocateIcon } from "lucide-react";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import BookCard from "@/components/book-card";
 import Layout from "@/components/layout";
 
 import { getBorrows } from "@/utils/apis/borrows";
-import { getProfile } from "@/utils/apis/users";
+import { useToken } from "@/utils/contexts/token";
 import { IBorrow } from "@/utils/types/borrows";
-import { ProfileType } from "@/utils/types/users";
 
 function Profile() {
-  const [data, setData] = useState<ProfileType>();
+  const { user } = useToken();
+
   const [borrows, setBorrows] = useState<IBorrow[]>([]);
 
   useEffect(() => {
-    fetchData();
     fetchBorrows();
   }, []);
-
-  async function fetchData() {
-    try {
-      const response = await getProfile();
-
-      setData(response.payload);
-    } catch (error) {
-      alert(error);
-    }
-  }
 
   async function fetchBorrows() {
     try {
@@ -35,7 +26,7 @@ function Profile() {
 
       setBorrows(response.payload.datas);
     } catch (error) {
-      alert(error);
+      toast.error((error as Error).message);
     }
   }
 
@@ -46,8 +37,8 @@ function Profile() {
           <div className="relative w-32 h-32 rounded-full overflow-hidden">
             <img
               src={
-                data?.profile_picture.length !== 0
-                  ? data?.profile_picture
+                user?.profile_picture.length !== 0
+                  ? user?.profile_picture
                   : "/placeholder.svg"
               }
               alt="Profile Picture"
@@ -57,10 +48,10 @@ function Profile() {
             />
           </div>
           <div className="text-center space-y-2">
-            <h1 className="text-2xl font-bold">{data?.full_name}</h1>
-            <p className="text-muted-foreground">{data?.email}</p>
-            <Button variant="outline" size="sm">
-              Edit Profile
+            <h1 className="text-2xl font-bold">{user?.full_name}</h1>
+            <p className="text-muted-foreground">{user?.email}</p>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/profile/edit">Edit Profile</Link>
             </Button>
           </div>
         </div>
@@ -69,7 +60,7 @@ function Profile() {
             <h2 className="text-xl font-bold mb-4">Address</h2>
             <div className="flex items-center space-x-4">
               <LocateIcon className="h-6 w-6 text-muted-foreground" />
-              <p className="text-muted-foreground">{data?.address}</p>
+              <p className="text-muted-foreground">{user?.address}</p>
             </div>
           </div>
         </div>
