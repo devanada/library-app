@@ -5,12 +5,8 @@ import {
   FieldPath,
   Path,
 } from "react-hook-form";
-import { CalendarIcon } from "lucide-react";
 import { ReactNode } from "react";
-import { format } from "date-fns";
 
-import { Calendar } from "@/components/ui/calendar";
-import { Button } from "@/components/ui/button";
 import {
   FormControl,
   FormDescription,
@@ -19,18 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 
 interface Props<T extends FieldValues> {
   name: FieldPath<T>;
