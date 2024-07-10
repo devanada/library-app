@@ -6,6 +6,7 @@ import Register from "@/pages/auth/register";
 import Profile from "@/pages/users/profile";
 import EditProfile from "@/pages/users/edit-profile";
 import BookDetail from "@/pages/books/detail";
+import CartPage from "@/pages/cart";
 import NotFound from "@/pages/not-found";
 import ProtectedRoute from "./protected-route";
 
@@ -58,6 +59,11 @@ const Router = () => {
           path: "/dashboard",
           loader: () => "Dashboard | Library App",
           element: <BookDetail />, // TODO: Change to admin dashboard
+        },
+        {
+          path: "/cart",
+          loader: () => "Cart | Library App",
+          element: <CartPage />,
         },
         {
           path: "*",

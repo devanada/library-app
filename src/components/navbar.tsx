@@ -1,4 +1,4 @@
-import { Menu, Package2, Search } from "lucide-react";
+import { Menu, Package2, Search, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -78,6 +78,13 @@ const Navbar = () => {
             />
           </div>
         </form>
+        {user?.role === "user" ? (
+          <Button variant="outline" size="icon" asChild>
+            <Link to="/cart">
+              <ShoppingCart />
+            </Link>
+          </Button>
+        ) : null}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
